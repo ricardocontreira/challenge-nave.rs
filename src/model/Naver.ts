@@ -32,6 +32,9 @@ class Naver {
   @ManyToOne(() => User)
   @JoinColumn({ name: 'userCreator_id' })
   Creator: User;
+
+  @Column('text', { array: true })
+  projects: string[];
 }
 
 export default Naver;

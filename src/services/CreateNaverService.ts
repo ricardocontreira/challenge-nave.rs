@@ -8,6 +8,7 @@ interface Request {
   admission_date: Date;
   job_role: string;
   userCreator_id: string;
+  projects: Array<string>;
 }
 
 class CreateNaverService {
@@ -17,6 +18,7 @@ class CreateNaverService {
     admission_date,
     job_role,
     userCreator_id,
+    projects,
   }: Request): Promise<Naver> {
     const naverRepository = getRepository(Naver);
     const naver = naverRepository.create({
@@ -25,6 +27,7 @@ class CreateNaverService {
       admission_date,
       job_role,
       userCreator_id,
+      projects,
     });
 
     await naverRepository.save(naver);
