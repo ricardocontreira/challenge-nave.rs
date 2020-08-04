@@ -2,8 +2,11 @@
 import { Router } from 'express';
 import { getRepository } from 'typeorm';
 import CreateProjectService from '../services/CreateProjectService';
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const projectRouter = Router();
+
+projectRouter.use(ensureAuthenticated);
 
 projectRouter.get('/', async (request, response) => {
   const projects = await getRepository('Projects').find();

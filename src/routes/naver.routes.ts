@@ -2,8 +2,11 @@
 import { Router } from 'express';
 import { getRepository } from 'typeorm';
 import CreateNaverService from '../services/CreateNaverService';
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const naverRouter = Router();
+
+naverRouter.use(ensureAuthenticated);
 
 naverRouter.get('/', async (request, response) => {
   const navers = await getRepository('Navers').find();
