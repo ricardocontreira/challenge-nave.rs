@@ -7,7 +7,7 @@ import projectRouter from './project.routes';
 const routes = Router();
 routes.use('/sessions', sessionRouter);
 routes.use('/user', UserRouter);
-routes.use('/Naver', naverRouter);
+routes.use('/naver', naverRouter);
 routes.use('/project', projectRouter);
 
 export default routes;
