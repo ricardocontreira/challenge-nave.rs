@@ -1,5 +1,4 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
-import { ForeignKeyMetadata } from 'typeorm/metadata/ForeignKeyMetadata';
 
 export default class CreateNavers1596459703303 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

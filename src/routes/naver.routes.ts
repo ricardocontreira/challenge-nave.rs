@@ -43,9 +43,10 @@ naverRouter.put('/Show/:id', async (request, response) => {
   const NaverId = await getRepository(Naver)
     .createQueryBuilder('naver')
     .where('naver.userCreator_id = :userCreator_id', { userCreator_id })
+    .andWhere('naver.id = :id', { id })
     .getOne();
 
-  const projectId = await getRepository(Project).findOne(id);
+  const projectId = await getRepository(Project).find();
 
   return response.json({ NaverId, projectId });
 });

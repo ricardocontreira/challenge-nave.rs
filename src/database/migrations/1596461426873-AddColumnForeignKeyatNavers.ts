@@ -4,7 +4,6 @@ import {
   TableColumn,
   TableForeignKey,
 } from 'typeorm';
-import { ForeignKeyMetadata } from 'typeorm/metadata/ForeignKeyMetadata';
 
 export default class AddColumnForeignKeyatNavers1596461426873
   implements MigrationInterface {
