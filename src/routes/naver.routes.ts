@@ -11,28 +11,49 @@ const naverRouter = Router();
 naverRouter.use(ensureAuthenticated);
 
 naverRouter.get('/', async (request, response) => {
-  const navers = await getRepository(Naver).find();
-  return response.json(navers);
+  const userCreator_id = request.user.id;
+  const { name, admission_date, job_role } = request.query;
+
+  const naver = await getRepository(Naver)
+    .createQueryBuilder('naver')
+    .where('naver.userCreator_id = :userCreator_id', { userCreator_id })
+    .where(navers => {
+      if (name) {
+        navers.orWhere('naver.name ilike :name', { name: `%${name}%` });
+      }
+      if (admission_date) {
+        navers.orWhere('naver.admission_date = :admission_date', {
+          admission_date,
+        });
+      }
+      if (job_role) {
+        navers.orWhere('naver.job_role ilike :job_role', {
+          job_role: `%${job_role}%`,
+        });
+      }
+    })
+    .getMany();
+  return response.json(naver);
 });
 
 naverRouter.put('/Show/:id', async (request, response) => {
   const { id } = request.params;
+  const userCreator_id = request.user.id;
 
-  const NaverId = await getRepository(Naver).findOne(id);
+  const NaverId = await getRepository(Naver)
+    .createQueryBuilder('naver')
+    .where('naver.userCreator_id = :userCreator_id', { userCreator_id })
+    .getOne();
+
   const projectId = await getRepository(Project).findOne(id);
 
   return response.json({ NaverId, projectId });
 });
 
 naverRouter.post('/Store', async (request, response) => {
-  const {
-    name,
-    birthdate,
-    admission_date,
-    job_role,
-    userCreator_id,
-    projects,
-  } = request.body;
+  const { name, birthdate, admission_date, job_role, projects } = request.body;
+
+  const userCreator_id = request.user.id;
 
   const CreateNaver = new CreateNaverService();
 
@@ -50,8 +71,12 @@ naverRouter.post('/Store', async (request, response) => {
 
 naverRouter.put('/update/:id', async (request, response) => {
   const { id } = request.params;
-
-  const naver = await getRepository(Naver).findOne(id);
+  const userCreator_id = request.user.id;
+  const naver = await getRepository(Naver)
+    .createQueryBuilder('naver')
+    .where('naver.userCreator_id = :userCreator_id', { userCreator_id })
+    .where('naver.id = :id', { id })
+    .getOne();
 
   if (naver) {
     getRepository(Naver).merge(naver, request.body);
